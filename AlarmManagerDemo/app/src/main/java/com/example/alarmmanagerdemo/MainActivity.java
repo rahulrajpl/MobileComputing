@@ -8,14 +8,17 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     TimePicker timePicker;
+    private int notificationId = 1;
+    EditText editText = findViewById(R.id.editText);
 
 
     @Override
@@ -61,5 +64,18 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         alarmManager.setRepeating(AlarmManager.RTC, timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent);
         Toast.makeText(this, "Alarm is set", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClick(View view){
+        Intent intent1 = new Intent(MainActivity.this, AlarmReceiver.class);
+        intent1.putExtra("notificationID", notificationId);
+        intent1.putExtra("todo",editText.getText().toString());
+
+        PendingIntent alarmintent = PendingIntent.getBroadcast(MainActivity.this,
+                0,
+                intent1,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager alarm = (AlarmManager) getSystemService(ALARM_SERVICE);
+        switch (view.getid())
     }
 }
